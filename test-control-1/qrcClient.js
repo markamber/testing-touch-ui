@@ -32,7 +32,7 @@ async function setupMeters() {
             ])
         );
 
-        const observable = client.pollGroup('meters', 0.1);
+        const observable = client.pollGroup('meters', 0.05);
 
         observable.subscribe((data) => {
             const meters = Array(8).fill(0);
