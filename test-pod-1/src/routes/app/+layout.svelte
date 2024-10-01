@@ -1,6 +1,7 @@
 <script>
 	import '../../app.css';
     import Triangle from "lucide-svelte/icons/triangle";
+    import SlidersVertical from "lucide-svelte/icons/sliders-vertical";
     import { Button } from "$lib/components/ui/button/index";
     import Bot from "lucide-svelte/icons/bot";
     import Clock from "$lib/components/util/clock/Clock.svelte";
@@ -8,8 +9,11 @@
 </script>
 
 <div class="flex min-h-screen w-full flex-col">
-    <header class="bg-background sticky top-0 flex h-16 items-center gap-4 px-4 md:px-6">
-        <Clock/>
+    <header class="bg-background sticky top-0 flex h-16 items-center gap-4 px-4 md:px-6 ml-8">
+        <div class="ml-auto">
+            <Clock />
+        </div>
+
     </header>
     <aside class="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
         <div class="border-b p-2">
@@ -24,7 +28,7 @@
                     class="rounded-lg"
                     aria-label="Models"
             >
-                <Bot class="size-5" />
+                <SlidersVertical class="size-5" />
             </Button>
         </nav>
         <nav class="mt-auto grid gap-1 p-2">
@@ -39,7 +43,7 @@
         </nav>
     </aside>
     <main
-            class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10"
+            class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10 ml-8"
     >
         <slot></slot>
     </main>
