@@ -5,7 +5,7 @@
     import { ProgressVertical } from "$lib/components/ui/progress-vertical/index.js";
     import {DeepstreamClient} from "@deepstream/client";
 
-    const client = new DeepstreamClient('192.168.20.173:6020')
+    const client = new DeepstreamClient('192.168.20.157:6020')
     client.login({}, (success, data) => {
         if (success) {
             // start application
@@ -77,25 +77,25 @@
 
 <Card.Root class="w-[1000px]">
     <Card.Content>
-    <div class="sliders-meters">
-        {#each sliders as slider, index}
-            <div class="slider-meter ml-8 mr-8">
-                <ProgressVertical
-                        value={meters[index]}
-                        class="h-[30px] w-[5px] mt-5"
-                />
-                <SliderVertical
-                        value={[slider]}
-                        max={100}
-                        min={0}
-                        class="h-[300px] mt-5"
-                        step={1}
-                        onValueChange={(e) => updateSliderValue(index, e[0])}
-                />
+        <div class="sliders-meters">
+            {#each sliders as slider, index}
+                <div class="slider-meter ml-8 mr-8">
+                    <ProgressVertical
+                            value={meters[index]}
+                            class="h-[30px] w-[5px] mt-5"
+                    />
+                    <SliderVertical
+                            value={[slider]}
+                            max={100}
+                            min={0}
+                            class="h-[300px] mt-5"
+                            step={1}
+                            onValueChange={(e) => updateSliderValue(index, e[0])}
+                    />
 
-            </div>
-        {/each}
-    </div>
+                </div>
+            {/each}
+        </div>
     </Card.Content>
 </Card.Root>
 

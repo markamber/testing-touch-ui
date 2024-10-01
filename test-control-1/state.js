@@ -1,16 +1,9 @@
-let state = {
-    sliders: Array(8).fill(0),
-    audioMeters: Array(8).fill(0),
-};
+const { DeepstreamClient } = require('@deepstream/client')
+const client = new DeepstreamClient('localhost:6020')
 
-// Function to update sliders
-const updateSliders = (sliders) => {
-    state.sliders = sliders;
-};
+client.login({}, () => {
+    console.log('Deepstream client connected');
+});
 
-// Function to update meters
-const updateMeters = (meters) => {
-    state.audioMeters = meters;
-};
 
-module.exports = { state, updateSliders, updateMeters };
+module.exports = { client };

@@ -1,0 +1,57 @@
+<script>
+  import './app.css';
+  import Triangle from "lucide-svelte/icons/triangle";
+  import SlidersVertical from "lucide-svelte/icons/sliders-vertical";
+  import { Button } from "$lib/components/ui/button/index";
+  import LifeBuoy from "lucide-svelte/icons/life-buoy";
+  import Mixer from "$lib/Mixer.svelte";
+  import Clock from "$lib/components/util/clock/Clock.svelte";
+</script>
+
+<div class="flex min-h-screen w-full flex-col">
+  <header class="bg-background sticky top-0 flex h-16 items-center gap-4 px-4 md:px-6 ml-8">
+    <div class="ml-auto">
+      <Clock />
+    </div>
+
+  </header>
+  <aside class="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
+    <div class="border-b p-2">
+      <Button variant="outline" size="icon" aria-label="Home">
+        <Triangle class="fill-foreground size-5" />
+      </Button>
+    </div>
+    <nav class="grid gap-1 p-2">
+      <Button
+              variant="ghost"
+              size="icon"
+              class="rounded-lg"
+              aria-label="Models"
+      >
+        <SlidersVertical class="size-5" />
+      </Button>
+    </nav>
+    <nav class="mt-auto grid gap-1 p-2">
+      <Button
+              variant="ghost"
+              size="icon"
+              class="mt-auto rounded-lg"
+              aria-label="Help"
+      >
+        <LifeBuoy class="size-5" />
+      </Button>
+    </nav>
+  </aside>
+  <main class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10 ml-8">
+    <Mixer />
+  </main>
+
+</div>
+
+<style>
+  html, body {
+    overflow: hidden;
+    height: 100%;
+  }
+
+</style>

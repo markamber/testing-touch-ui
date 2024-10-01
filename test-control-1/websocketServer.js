@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
-const { state, updateSliders, updateMeters } = require('./state'); // Manage state externally
-const { qrcEvents, setSliderValues } = require('./qrcClient');
+const { updateSliders, updateMeters } = require('./state'); // Manage state externally
+const { state } = require('./meters')
 
 // Start WebSocket server and broadcast state
 function createWebSocketServer(server) {
@@ -27,10 +27,7 @@ function createWebSocketServer(server) {
         ws.on('message', async (data) => {
             try {
                 const clientState = JSON.parse(data);
-                if (clientState.sliders && Array.isArray(clientState.sliders)) {
-                    updateSliders(clientState.sliders);
-                    await setSliderValues(clientState.sliders);
-                }
+                // do something with message?
             } catch (error) {
                 console.error('Error processing client message:', error);
             }
@@ -43,10 +40,5 @@ function createWebSocketServer(server) {
 
     return wss;
 }
-
-// Subscribe to QRC meter updates and update WebSocket clients
-qrcEvents.on('meterUpdate', (meters) => {
-    updateMeters(meters); // Update the shared state with new meter values
-});
 
 module.exports = { createWebSocketServer };

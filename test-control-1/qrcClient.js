@@ -52,13 +52,8 @@ async function setupMeters() {
 }
 
 // API for controlling the QRC client
-const setFaderValue = async (sliders) => {
-    for (let i = 0; i < sliders.length; i++) {
-        const sliderValue = sliders[i];
-        const inputNumber = i + 1;
-        await client.send(commands.setComponentControls('mixer', [sendVolume(inputNumber, sliderValue)]));
-        console.log(`Sent volume change: ${sliderValue} for input.${inputNumber}`);
-    }
+const setFaderValue = async (faderNum, value) => {
+        await client.send(commands.setComponentControls('mixer', [sendVolume(faderNum, value)]));
 };
 
 // Initialize the setupMeters function
@@ -66,5 +61,5 @@ setupMeters();
 
 module.exports = {
     qrcEvents, // Emit events when meters update
-    setSliderValues: setFaderValue, // Set slider values for volume control
+    setFaderValue, // Set slider values for volume control
 };
