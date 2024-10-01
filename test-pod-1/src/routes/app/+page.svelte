@@ -1,11 +1,14 @@
 <script lang="ts">
     import { SliderVertical } from "$lib/components/ui/slider-vertical/index.js";
-    import { Slider } from "$lib/components/ui/slider/index.js";
+    import * as Card from "$lib/components/ui/card/index.js";
     import { onMount, onDestroy } from "svelte";
     import { ProgressVertical } from "$lib/components/ui/progress-vertical/index.js";
 
-    let sliders = Array(8).fill(50); // Default slider values (8 sliders)
-    let meters = Array(8).fill(0);   // Audio meter values (8 meters)
+    import type { PageData } from './$types';
+
+    export let data: PageData;
+    let sliders = data.item.sliders; // Array(8).fill(50); // Default slider values (8 sliders)
+    let meters = data.item.audioMeters; //Array(8).fill(data.);   // Audio meter values (8 meters)
     let socket: WebSocket;
 
     // Function to send slider values as an array of 8 values to the WebSocket server
@@ -17,7 +20,7 @@
 
     // Set up WebSocket on component mount
     onMount(() => {
-        socket = new WebSocket("ws://localhost:3000"); // Adjust WebSocket URL if necessary
+        socket = new WebSocket("ws://192.168.20.157:3000"); // Adjust WebSocket URL if necessary
 
         // Handle incoming messages from WebSocket (updating meter values)
         socket.onmessage = (event) => {
@@ -44,21 +47,30 @@
     }
 </script>
 
-<div class="sliders-meters">
-    {#each sliders as slider, index}
-        <div class="slider-meter ml-8">
-            <SliderVertical
+<Card.Root class="w-[1000px]">
+    <Card.Content>
+    <div class="sliders-meters">
+        {#each sliders as slider, index}
+            <div class="slider-meter ml-8 mr-8">
+                <ProgressVertical
+                        value={meters[index]}
+                        class="h-[30px] w-[5px] mt-5"
+                />
+                <SliderVertical
+                        value={[slider]}
+                        max={100}
+                        min={0}
+                        class="h-[300px] mt-5"
+                        step={1}
+                        onValueChange={(e) => updateSliderValue(index, e[0])}
+                />
 
-                    value={[slider]}
-                    max={100}
-                    min={0}
-                    step={1}
-                    onValueChange={(e) => updateSliderValue(index, e[0])}
-            />
-            <ProgressVertical value={meters[index]} class="h-[300px] w-[5px] mt-5" />
-        </div>
-    {/each}
-</div>
+            </div>
+        {/each}
+    </div>
+    </Card.Content>
+</Card.Root>
+
 
 <style>
     .sliders-meters {

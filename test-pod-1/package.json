@@ -35,6 +35,7 @@
 	"dependencies": {
 		"bits-ui": "^0.21.15",
 		"clsx": "^2.1.1",
+		"jsynchronous": "^0.9.5",
 		"lucide-svelte": "^0.446.0",
 		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1"

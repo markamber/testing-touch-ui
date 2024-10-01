@@ -10,24 +10,13 @@
 	export let className: $$Props["class"] = undefined;
 	export { className as class };
 
-	// The min and max dB values your audio hardware works with
-	const minDb = -100;  // Minimum dB value (e.g., -60 dB)
-	const maxDb = 10;    // Maximum dB value (e.g., 0 dB)
-
-	function scale(val, f0, f1, t0, t1) {
-		return ((val - f0) * (t1 - t0)) / (f1 - f0) + t0;
-	}
-
-	// Reverse of sliderValueToDb: Maps dB value back to slider value (0-100)
+	// Function to map dB value back to slider value (0-100) with reverse exponential taper
 	function dbToSliderValue(dbValue: number): number {
-		// Reverse the scale function to map dB value to normalized vol (0 to 1)
-		const vol = scale(dbValue, -100, 12, 0, 1);
-
-		// Reverse the logarithmic transformation
-		const sliderValue = Math.exp(vol * Math.log(113)) - 101;
-
-		// Return the slider value clamped to [0, 100]
-		return Math.min(100, Math.max(0, sliderValue));
+		if(dbValue === 0) {
+			return 0
+		}
+		const sliderValue = 100 * Math.exp((dbValue - 10) / 25) - 1;
+		return Math.min(100, Math.max(0, sliderValue));  // Clamp to [0, 100]
 	}
 
 
@@ -49,7 +38,6 @@
 	function handleSliderChange(sliderVal: number[]) {
 		sliderValue = sliderVal;  // Update the internal slider value array
 		value = [sliderValueToDb(sliderVal[0])];  // Update the `value` array with the real dB value
-		console.log(value[0])
 		// Send `value` to your audio hardware here, if necessary
 	}
 
@@ -70,27 +58,26 @@
 		let:thumbs
 		let:ticks
 >
-	<!-- Track -->
-	<span class="bg-primary/20 relative w-1.5 h-full grow overflow-hidden rounded-full">
-		<!-- Range fill (vertical) -->
-		<SliderPrimitive.Range class="bg-primary absolute w-full "  />
-	</span>
-
 	{#each ticks as tick}
-
 		{#if tick['data-value'] === 69}
 			<SliderPrimitive.Tick
 					{tick}
-					class="w-10 h-0.5 bg-primary/10"
+					class="w-8 h-0.5 bg-primary/20"
 			/>
 		{/if}
 	{/each}
 
+	<!-- Track -->
+	<span class="bg-primary/20 relative w-10 h-full grow overflow-hidden rounded-full">
+		<SliderPrimitive.Range class="bg-primary absolute w-full "  />
+	</span>
+
+
+
 	{#each thumbs as thumb}
-		<!-- Thumb -->
 		<SliderPrimitive.Thumb
 				{thumb}
-				class="border-primary/50 bg-background focus-visible:ring-ring block h-4 w-4 rounded-full border shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+				class="border-primary/50 bg-background focus-visible:ring-ring block h-8 w-8 rounded-full border shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
 		/>
 	{/each}
 

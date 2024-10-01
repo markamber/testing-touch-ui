@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "control aspects of room",
   "main": "index.js",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
@@ -11,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.0",
+    "jsynchronous": "^0.9.5",
     "qsys-qrc-client": "^0.1.1",
     "ws": "^8.18.0",
     "zen-observable": "^0.10.0"
