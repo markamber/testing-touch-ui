@@ -27,7 +27,6 @@
                 meters = [...data.audioMeters]; // Ensure that we create a new array
             }
 
-            console.log(meters)
         };
 
         // Clean up WebSocket connection on component destruction
@@ -51,12 +50,12 @@
             <SliderVertical
 
                     value={[slider]}
-                    max={10}
-                    min={-100}
+                    max={100}
+                    min={0}
                     step={1}
                     onValueChange={(e) => updateSliderValue(index, e[0])}
             />
-            <ProgressVertical value={meters[index]} max={100} class="h-[300px] w-[5px] mt-5" />
+            <ProgressVertical value={meters[index]} class="h-[300px] w-[5px] mt-5" />
         </div>
     {/each}
 </div>
