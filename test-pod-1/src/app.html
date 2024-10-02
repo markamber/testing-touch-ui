@@ -15,6 +15,11 @@
 				touch-action:none;
 			}
 		</style>
+		<script>
+			if (typeof global === 'undefined') {
+				global = window;
+			}
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

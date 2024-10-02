@@ -5,37 +5,21 @@
     import { ProgressVertical } from "$lib/components/ui/progress-vertical/index.js";
     import {DeepstreamClient} from "@deepstream/client";
 
-    const client = new DeepstreamClient('192.168.20.157:6020')
-    client.login({}, (success, data) => {
-        if (success) {
-            // start application
-            // client.getConnectionState() will now return 'OPEN'
-        } else {
-            // extra data can be optionaly sent from deepstream for
-            // both successful and unsuccesful logins
-            alert(data)
+    const client = new DeepstreamClient('127.0.0.1:6020')
 
-            // client.getConnectionState() will now return
-            // 'AWAITING_AUTHENTICATION' or 'CLOSED'
-            // if the maximum number of authentication
-            // attempts has been exceeded.
-        }
-    })
+    client.login()
 
+    const qsysFaderList = client.record.getList('qsys/faders');
 
+    qsysFaderList.whenReady();
 
-    const sliderRecord = client.record.getRecord('sliders');
+    qsysFaderList.getEntries().forEach(createFader)
 
-    sliderRecord.subscribe((data) => {
-        console.log('Slider data updated:', data);
-    });
-
-    function updateSlider(name, value) {
-        sliderRecord.set({ [name]: value });
-    }
+    qsysFaderList.on('entry-added', createFader)
 
 
     let sliders =  Array(8).fill(0); // Default slider values (8 sliders)
+    let sliderRefs = [];
     let meters = Array(8).fill(0);   // Audio meter values (8 meters)
     let socket: WebSocket;
 
@@ -46,9 +30,29 @@
         }
     }
 
+    function createFader(entry) {
+        console.log(`${entry} is the one we are getting`)
+        const record = client.record.getRecord(entry)
+        record.whenReady().then((record) => {
+            const data = record.get()
+            console.log(record)
+            console.log(data)
+            setEntry(entry, data)
+        })
+        record.subscribe((record) => setEntry(entry, record))
+
+    }
+
+    function setEntry(record, data) {
+        data['callback'] = (value) => record.set("value", value)
+        sliderRefs[data.number] = data;
+        sliderRefs = [...sliderRefs];
+        console.log(sliderRefs)
+    }
+
     // Set up WebSocket on component mount
     onMount(() => {
-        socket = new WebSocket("ws://192.168.20.157:3000"); // Adjust WebSocket URL if necessary
+        socket = new WebSocket("ws://127.0.0.1:3000"); // Adjust WebSocket URL if necessary
 
         // Handle incoming messages from WebSocket (updating meter values)
         socket.onmessage = (event) => {
@@ -78,7 +82,7 @@
 <Card.Root class="w-[1000px]">
     <Card.Content>
         <div class="sliders-meters">
-            {#each sliders as slider, index}
+            {#each sliderRefs as slider, index}
                 <div class="slider-meter ml-8 mr-8">
                     <ProgressVertical
                             value={meters[index]}
