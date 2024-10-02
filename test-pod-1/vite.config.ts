@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { Server } from 'socket.io
+import { Server } from 'socket.io';
 import { type ViteDevServer, defineConfig } from 'vite';
 
 const webSocketServer = {
