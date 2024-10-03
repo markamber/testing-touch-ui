@@ -13,23 +13,35 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ControlImport } from './routes/control'
 
 // Create Virtual Routes
 
-const MixerLazyImport = createFileRoute('/mixer')()
+const StartLazyImport = createFileRoute('/start')()
 const IndexLazyImport = createFileRoute('/')()
+const ControlMixerLazyImport = createFileRoute('/control/mixer')()
 
 // Create/Update Routes
 
-const MixerLazyRoute = MixerLazyImport.update({
-  path: '/mixer',
+const StartLazyRoute = StartLazyImport.update({
+  path: '/start',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/mixer.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/start.lazy').then((d) => d.Route))
+
+const ControlRoute = ControlImport.update({
+  path: '/control',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ControlMixerLazyRoute = ControlMixerLazyImport.update({
+  path: '/mixer',
+  getParentRoute: () => ControlRoute,
+} as any).lazy(() => import('./routes/control/mixer.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -42,51 +54,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/mixer': {
-      id: '/mixer'
-      path: '/mixer'
-      fullPath: '/mixer'
-      preLoaderRoute: typeof MixerLazyImport
+    '/control': {
+      id: '/control'
+      path: '/control'
+      fullPath: '/control'
+      preLoaderRoute: typeof ControlImport
       parentRoute: typeof rootRoute
+    }
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/control/mixer': {
+      id: '/control/mixer'
+      path: '/mixer'
+      fullPath: '/control/mixer'
+      preLoaderRoute: typeof ControlMixerLazyImport
+      parentRoute: typeof ControlImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface ControlRouteChildren {
+  ControlMixerLazyRoute: typeof ControlMixerLazyRoute
+}
+
+const ControlRouteChildren: ControlRouteChildren = {
+  ControlMixerLazyRoute: ControlMixerLazyRoute,
+}
+
+const ControlRouteWithChildren =
+  ControlRoute._addFileChildren(ControlRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/mixer': typeof MixerLazyRoute
+  '/control': typeof ControlRouteWithChildren
+  '/start': typeof StartLazyRoute
+  '/control/mixer': typeof ControlMixerLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/mixer': typeof MixerLazyRoute
+  '/control': typeof ControlRouteWithChildren
+  '/start': typeof StartLazyRoute
+  '/control/mixer': typeof ControlMixerLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/mixer': typeof MixerLazyRoute
+  '/control': typeof ControlRouteWithChildren
+  '/start': typeof StartLazyRoute
+  '/control/mixer': typeof ControlMixerLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mixer'
+  fullPaths: '/' | '/control' | '/start' | '/control/mixer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mixer'
-  id: '__root__' | '/' | '/mixer'
+  to: '/' | '/control' | '/start' | '/control/mixer'
+  id: '__root__' | '/' | '/control' | '/start' | '/control/mixer'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  MixerLazyRoute: typeof MixerLazyRoute
+  ControlRoute: typeof ControlRouteWithChildren
+  StartLazyRoute: typeof StartLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  MixerLazyRoute: MixerLazyRoute,
+  ControlRoute: ControlRouteWithChildren,
+  StartLazyRoute: StartLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,14 +147,25 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/mixer"
+        "/control",
+        "/start"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/mixer": {
-      "filePath": "mixer.lazy.tsx"
+    "/control": {
+      "filePath": "control.tsx",
+      "children": [
+        "/control/mixer"
+      ]
+    },
+    "/start": {
+      "filePath": "start.lazy.tsx"
+    },
+    "/control/mixer": {
+      "filePath": "control/mixer.lazy.tsx",
+      "parent": "/control"
     }
   }
 }

@@ -1,0 +1,20 @@
+.title {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-size: rem(100px);
+  font-weight: 900;
+  letter-spacing: rem(-2px);
+  padding-top: 300px;
+
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: rem(50);
+  }
+}
+
+.anchorBottom {
+  font-size: rem(40);
+  font-weight: 800;
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  padding-bottom: 30px;
+}

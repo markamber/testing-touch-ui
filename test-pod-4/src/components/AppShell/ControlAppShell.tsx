@@ -2,6 +2,7 @@ import { AppShell, Burger, Group } from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
 import classes from './ControlAppShell.module.css';
 import {Link, Outlet} from "@tanstack/react-router";
+import './ControlAppShell.css'
 
 export function ControlAppShell() {
   const [opened, { toggle }] = useDisclosure();
@@ -23,7 +24,7 @@ export function ControlAppShell() {
                   <Link to="/" className={classes.control}>
                     Home
                   </Link>{' '}
-                  <Link to="/mixer" className={classes.control}>
+                  <Link to="/control/mixer" className={classes.control}>
                     Mixer
                   </Link>
                 </Group>

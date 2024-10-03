@@ -1,5 +1,4 @@
-import { createRootRoute } from '@tanstack/react-router'
-import {ControlAppShell} from "../components/AppShell/ControlAppShell.tsx";
+import {createRootRoute, Outlet} from '@tanstack/react-router'
 import '@mantine/core/styles.css';
 import {TanStackRouterDevtools} from "@tanstack/router-devtools";
 
@@ -12,7 +11,7 @@ function RootComponent() {
 
     return (
         <>
-            <ControlAppShell />
+            <Outlet />
             <TanStackRouterDevtools />
         </>
     )

@@ -17,7 +17,7 @@ interface FaderMeterContextType {
 
 // Create a context for faders and meters
 const FaderMeterContext = createContext<FaderMeterContextType | null>(null);
-const SOCKET_URL = "ws://localhost:3001";
+const SOCKET_URL = "ws://172.24.0.106:3001";
 const MESSAGE_TYPE = {
     INITIAL_DATA: "INITIAL_DATA",
     UPDATE_FADERS: "UPDATE_FADERS",
@@ -31,8 +31,8 @@ export const FaderMeterProvider = ({ children }: { children: ReactNode }) => {
     });
 
     // Local state for faders and meters
-    const [faders, setFaders] = useState<number[]>(Array(8).fill(0));
-    const [meters, setMeters] = useState<number[]>(Array(8).fill(0));
+    const [faders, setFaders] = useState<number[]>(Array(8).fill(-200));
+    const [meters, setMeters] = useState<number[]>(Array(8).fill(-200));
 
     // Check if WebSocket connection is open and ready for sending messages
     const canSendMessages: boolean = readyState === ReadyState.OPEN;

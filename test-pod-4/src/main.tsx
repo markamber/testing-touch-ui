@@ -31,7 +31,7 @@ if (!rootElement.innerHTML) {
     root.render(
         <StrictMode>
             <FaderMeterProvider>
-                <MantineProvider theme={theme}>
+                <MantineProvider forceColorScheme="dark" theme={theme}>
                     <RouterProvider router={router} />
                 </MantineProvider>
             </FaderMeterProvider>
