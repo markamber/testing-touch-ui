@@ -21,7 +21,7 @@ export function ControlAppShell() {
   const { start } = useTimeout(() => recordingDoesToggle(), 1000);
 
   const navigate = useNavigate()
-  const { tabValue } = useParams({});
+
 
   function recordingTryToggle() {
     setWaitRecording(true);
@@ -41,11 +41,10 @@ export function ControlAppShell() {
       <>
         <AppShell
             header={{ height: 90 }}
-            h={'100%'}
         >
 
           <AppShell.Header>
-            <Group h="100%" px="md">
+            <Group  p={'sm'}>
               <Group justify="space-between" style={{ flex: 1 }}>
 
                 <Space/>
@@ -88,7 +87,7 @@ export function ControlAppShell() {
                     variant="unstyled"
                     defaultValue="mixer"
                     classNames={classes}
-                    value={tabValue}
+
                     onChange={(value) => navigate({to: `/control/${value}`})}
                 >
                   <Tabs.List grow>
@@ -114,10 +113,7 @@ export function ControlAppShell() {
             </Group>
           </AppShell.Header>
 
-
-          <AppShell.Main h={'100%'}>
-            <Outlet />
-          </AppShell.Main>
+          <Outlet />
 
         </AppShell>
 

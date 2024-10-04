@@ -6,7 +6,7 @@ export function SessionStarter() {
 
 
     return (
-        <Center h={'100%'}>
+        <Center h={'100vh'}>
             <Paper w={'1000'} p={'xl'}>
                 <StarterStepper />
             </Paper>

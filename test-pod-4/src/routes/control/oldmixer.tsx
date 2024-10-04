@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import {
   Grid,
   Group,
@@ -13,7 +13,7 @@ import { FaderStack } from '../../components/FaderStack/FaderStack.tsx'
 import { useFaderMeterContext } from '../../lib/StateProvider.tsx'
 import '../../lib/root100.css'
 
-export const Route = createLazyFileRoute('/control/oldmixer')({
+export const Route = createFileRoute('/control/oldmixer')({
   component: Mixer,
 })
 
