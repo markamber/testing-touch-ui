@@ -19,6 +19,7 @@ import { Route as ControlImport } from './routes/control'
 
 const StartLazyImport = createFileRoute('/start')()
 const IndexLazyImport = createFileRoute('/')()
+const ControlNewmixerLazyImport = createFileRoute('/control/newmixer')()
 const ControlMixerLazyImport = createFileRoute('/control/mixer')()
 
 // Create/Update Routes
@@ -37,6 +38,13 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ControlNewmixerLazyRoute = ControlNewmixerLazyImport.update({
+  path: '/newmixer',
+  getParentRoute: () => ControlRoute,
+} as any).lazy(() =>
+  import('./routes/control/newmixer.lazy').then((d) => d.Route),
+)
 
 const ControlMixerLazyRoute = ControlMixerLazyImport.update({
   path: '/mixer',
@@ -75,6 +83,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlMixerLazyImport
       parentRoute: typeof ControlImport
     }
+    '/control/newmixer': {
+      id: '/control/newmixer'
+      path: '/newmixer'
+      fullPath: '/control/newmixer'
+      preLoaderRoute: typeof ControlNewmixerLazyImport
+      parentRoute: typeof ControlImport
+    }
   }
 }
 
@@ -82,10 +97,12 @@ declare module '@tanstack/react-router' {
 
 interface ControlRouteChildren {
   ControlMixerLazyRoute: typeof ControlMixerLazyRoute
+  ControlNewmixerLazyRoute: typeof ControlNewmixerLazyRoute
 }
 
 const ControlRouteChildren: ControlRouteChildren = {
   ControlMixerLazyRoute: ControlMixerLazyRoute,
+  ControlNewmixerLazyRoute: ControlNewmixerLazyRoute,
 }
 
 const ControlRouteWithChildren =
@@ -96,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/control': typeof ControlRouteWithChildren
   '/start': typeof StartLazyRoute
   '/control/mixer': typeof ControlMixerLazyRoute
+  '/control/newmixer': typeof ControlNewmixerLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -103,6 +121,7 @@ export interface FileRoutesByTo {
   '/control': typeof ControlRouteWithChildren
   '/start': typeof StartLazyRoute
   '/control/mixer': typeof ControlMixerLazyRoute
+  '/control/newmixer': typeof ControlNewmixerLazyRoute
 }
 
 export interface FileRoutesById {
@@ -111,14 +130,26 @@ export interface FileRoutesById {
   '/control': typeof ControlRouteWithChildren
   '/start': typeof StartLazyRoute
   '/control/mixer': typeof ControlMixerLazyRoute
+  '/control/newmixer': typeof ControlNewmixerLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control' | '/start' | '/control/mixer'
+  fullPaths:
+    | '/'
+    | '/control'
+    | '/start'
+    | '/control/mixer'
+    | '/control/newmixer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control' | '/start' | '/control/mixer'
-  id: '__root__' | '/' | '/control' | '/start' | '/control/mixer'
+  to: '/' | '/control' | '/start' | '/control/mixer' | '/control/newmixer'
+  id:
+    | '__root__'
+    | '/'
+    | '/control'
+    | '/start'
+    | '/control/mixer'
+    | '/control/newmixer'
   fileRoutesById: FileRoutesById
 }
 
@@ -157,7 +188,8 @@ export const routeTree = rootRoute
     "/control": {
       "filePath": "control.tsx",
       "children": [
-        "/control/mixer"
+        "/control/mixer",
+        "/control/newmixer"
       ]
     },
     "/start": {
@@ -165,6 +197,10 @@ export const routeTree = rootRoute
     },
     "/control/mixer": {
       "filePath": "control/mixer.lazy.tsx",
+      "parent": "/control"
+    },
+    "/control/newmixer": {
+      "filePath": "control/newmixer.lazy.tsx",
       "parent": "/control"
     }
   }

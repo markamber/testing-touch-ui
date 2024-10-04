@@ -20,13 +20,22 @@ const dBtoValue = (db: number): number => {
     return mm;
 };
 
+const getColorForValue = (db: number): string => {
+    if (db >= 0) {
+        return "red"; // 0 to 10 dB
+    } else if (db >= -20) {
+        return "orange"; // -20 to 0 dB
+    } else {
+        return "green"; // -200 to -20 dB
+    }
+};
+
 interface MeterProps {
     soundValue: number; // Value in dB
     bars?: number; // Number of bars (optional, defaults to a reasonable value)
     width?: number; // Width of each bar (optional)
     height?: number; // Height of the meter (optional)
     spacing?: number; // Spacing between bars (optional)
-    barColor?: string; // Color of the bars (optional)
 }
 
 export const AudioMeter = ({
@@ -35,7 +44,6 @@ export const AudioMeter = ({
                                width = 10, // default width of bars
                                height = 100, // default height of the meter
                                spacing = 2, // default spacing between bars
-                               barColor = "lightblue", // default bar color
                            }: MeterProps) => {
     const refs = useRef<(HTMLDivElement | null)[]>([]);
     const volumeRefs = useRef(new Array(bars).fill(0));
@@ -51,11 +59,12 @@ export const AudioMeter = ({
                     key={`vu-${i}`}
                     style={{
                         position: "absolute",
-                        background: barColor,
+                        background: "lightblue", // Initial color
                         borderRadius: `${width / 2}px`,
                         width: `${width}px`,
                         height: `${height}px`,
                         transformOrigin: "bottom", // scaleY animation will occur from the bottom of each bar
+                        transition: "background-color 0.2s ease", // Smooth transition for color change
                         left: i * (width + spacing) + "px",
                     }}
                 />
@@ -63,19 +72,21 @@ export const AudioMeter = ({
         }
 
         return barsArray;
-    }, [bars, width, height, spacing, barColor]); // Only recreate elements if these values change
+    }, [bars, width, height, spacing]); // Only recreate elements if these values change
 
     useEffect(() => {
         let animationFrameId: number;
 
         const updateMeter = () => {
             const visualValue = dBtoValue(soundValue);
+            const color = getColorForValue(soundValue); // Get color based on soundValue
             volumeRefs.current.unshift(visualValue);
             volumeRefs.current.pop();
 
             for (let i = 0; i < refs.current.length; i++) {
                 if (refs.current[i]) {
                     refs.current[i]!.style.transform = `scaleY(${volumeRefs.current[i] / 100})`;
+                    refs.current[i]!.style.background = color; // Update bar color dynamically with a smooth transition
                 }
             }
 
@@ -93,6 +104,7 @@ export const AudioMeter = ({
                 position: "relative",
                 width: bars * (width + spacing) + "px",
                 height: `${height}px`,
+                backgroundColor: 'var(--mantine-color-dark-9)',
             }}
         >
             {elements} {/* Render memoized elements */}

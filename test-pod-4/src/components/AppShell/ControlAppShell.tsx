@@ -1,43 +1,93 @@
-import { AppShell, Burger, Group } from '@mantine/core';
-import {useDisclosure} from "@mantine/hooks";
+import {ActionIcon, AppShell, Burger, Center, Grid, Group, Divider, Paper, rem, Tabs} from '@mantine/core';
 import classes from './ControlAppShell.module.css';
-import {Link, Outlet} from "@tanstack/react-router";
+import { Outlet} from "@tanstack/react-router";
 import './ControlAppShell.css'
+import {
+  IconAdjustmentsFilled,
+  IconGridDots,
+  IconPlayerRecord,
+} from "@tabler/icons-react";
+import {useDisclosure, useToggle} from "@mantine/hooks";
+import {useEffect} from "react";
 
 export function ControlAppShell() {
+
   const [opened, { toggle }] = useDisclosure();
+
+  const [recording, toggleRecording ] = useToggle();
+
+  function click() {
+    console.log("click");
+    toggleRecording();
+  }
+
+  useEffect(() => {
+    console.log(recording);
+  }, [recording]);
 
   return (
       <>
         <AppShell
-            header={{ height: 60 }}
-            navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
-            padding="md"
+            header={{ height: 90 }}
             h={'100%'}
         >
 
           <AppShell.Header>
             <Group h="100%" px="md">
-              <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
               <Group justify="space-between" style={{ flex: 1 }}>
-                <Group ml="xl" gap={0} visibleFrom="sm">
-                  <Link to="/" className={classes.control}>
-                    Home
-                  </Link>{' '}
-                  <Link to="/control/mixer" className={classes.control}>
-                    Mixer
-                  </Link>
-                </Group>
+
+
+                <ActionIcon size="xl" radius="xl"  loading={recording} loaderProps={{ type: 'oval' }} onClick={() => click()} >
+                  <IconPlayerRecord />
+                </ActionIcon>
+
+
+                <Paper  pb={'md'}  w={350} h={70} bg={'var(--mantine-color-dark-9)'}>
+                  <Grid>
+                    <Grid.Col span={12}  h={40} style={{ borderBottom: 1, borderColor: 'white'}} >
+                      <Center h={34}>
+                        HI
+                      </Center>
+                      <Divider />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Center >
+                        HI
+                      </Center>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Center>
+                        HI
+                      </Center>
+                    </Grid.Col>
+                  </Grid>
+                </Paper>
+                <Tabs variant="unstyled" defaultValue="mixer" classNames={classes}>
+                  <Tabs.List grow>
+                    <Tabs.Tab
+                        value="mixer"
+                        leftSection={<IconAdjustmentsFilled style={{ width: rem(16), height: rem(16) }} />}
+                    >
+                      Mixer
+                    </Tabs.Tab>
+                    <Tabs.Tab
+                        value="controls"
+                        leftSection={<IconGridDots style={{ width: rem(16), height: rem(16) }} />}
+                    >
+                      Controls
+                    </Tabs.Tab>
+
+                  </Tabs.List>
+                </Tabs>
+
+                <Burger size="lg" opened={opened} onClick={toggle} aria-label="Toggle navigation" />
+
               </Group>
             </Group>
           </AppShell.Header>
 
-          <AppShell.Navbar py="md" px={4}>
 
-          </AppShell.Navbar>
-
-          <AppShell.Main
-          h={'100%'}>
+          <AppShell.Main h={'100%'}>
             <Outlet />
           </AppShell.Main>
 

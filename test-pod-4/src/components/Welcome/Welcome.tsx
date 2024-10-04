@@ -1,6 +1,7 @@
 import {Title, Text, Anchor, Box, Space} from '@mantine/core';
 import classes from './Welcome.module.css';
 import {Link} from "@tanstack/react-router";
+import '../../lib/root100.css'
 
 export function Welcome() {
   return (

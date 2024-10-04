@@ -88,7 +88,7 @@ export function StarterStepper() {
                     </Button>
                 )}
                 {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-                {active === 3 && <Button component={Link} to={'/control/mixer'}>Start</Button>}
+                {active === 3 && <Button component={Link} to={'/control/newmixer'}>Start</Button>}
             </Group>
         </>
     );

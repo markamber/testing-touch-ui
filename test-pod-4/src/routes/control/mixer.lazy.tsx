@@ -1,7 +1,8 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import {Grid, Group, Paper, Stack, rem, Flex, Space, Text} from '@mantine/core'
 import { FaderStack } from '../../components/FaderStack/FaderStack.tsx'
-import { useFaderMeterContext } from '../../lib/StateProvider.tsx' // Assuming the context is defined as FaderMeterContext.tsx
+import { useFaderMeterContext } from '../../lib/StateProvider.tsx'
+import '../../lib/root100.css'
 
 export const Route = createLazyFileRoute('/control/mixer')({
   component: Mixer,
