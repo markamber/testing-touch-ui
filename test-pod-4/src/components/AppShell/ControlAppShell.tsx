@@ -1,14 +1,14 @@
-import {ActionIcon, AppShell, Burger, Center, Grid, Group, Divider, Paper, rem, Tabs} from '@mantine/core';
+import {ActionIcon, AppShell, Burger, Center, Grid, Group, Divider, Paper, rem, Tabs, Space} from '@mantine/core';
 import classes from './ControlAppShell.module.css';
-import { Outlet} from "@tanstack/react-router";
+import {Outlet, useNavigate, useParams} from "@tanstack/react-router";
 import './ControlAppShell.css'
 import {
   IconAdjustmentsFilled,
   IconGridDots,
-  IconPlayerRecord,
+  IconPlayerRecord, IconPlayerRecordFilled,
 } from "@tabler/icons-react";
-import {useDisclosure, useToggle} from "@mantine/hooks";
-import {useEffect} from "react";
+import {useDisclosure, useTimeout, useToggle} from "@mantine/hooks";
+import {useEffect, useState} from "react";
 
 export function ControlAppShell() {
 
@@ -16,8 +16,20 @@ export function ControlAppShell() {
 
   const [recording, toggleRecording ] = useToggle();
 
-  function click() {
-    console.log("click");
+  const [waitRecording , setWaitRecording] = useState(false);
+
+  const { start } = useTimeout(() => recordingDoesToggle(), 1000);
+
+  const navigate = useNavigate()
+  const { tabValue } = useParams({});
+
+  function recordingTryToggle() {
+    setWaitRecording(true);
+    start()
+  }
+
+  function recordingDoesToggle() {
+    setWaitRecording(false);
     toggleRecording();
   }
 
@@ -36,9 +48,19 @@ export function ControlAppShell() {
             <Group h="100%" px="md">
               <Group justify="space-between" style={{ flex: 1 }}>
 
+                <Space/>
 
-                <ActionIcon size="xl" radius="xl"  loading={recording} loaderProps={{ type: 'oval' }} onClick={() => click()} >
-                  <IconPlayerRecord />
+
+                <ActionIcon
+                    variant={recording ? "filled" : "outline"}
+                    color={recording ? 'var(--mantine-color-red-9)' : undefined }
+                    size="xl"
+                    radius="xl"
+                    loading={waitRecording}
+                    loaderProps={{ type: 'oval' }}
+                    onClick={() => recordingTryToggle()}
+                >
+                  { recording ? <IconPlayerRecordFilled /> : <IconPlayerRecord />}
                 </ActionIcon>
 
 
@@ -62,7 +84,13 @@ export function ControlAppShell() {
                     </Grid.Col>
                   </Grid>
                 </Paper>
-                <Tabs variant="unstyled" defaultValue="mixer" classNames={classes}>
+                <Tabs
+                    variant="unstyled"
+                    defaultValue="mixer"
+                    classNames={classes}
+                    value={tabValue}
+                    onChange={(value) => navigate({to: `/control/${value}`})}
+                >
                   <Tabs.List grow>
                     <Tabs.Tab
                         value="mixer"

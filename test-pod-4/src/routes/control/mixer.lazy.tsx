@@ -1,8 +1,16 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import {Grid, Group, Paper, Stack, rem, Flex, Space, Text} from '@mantine/core'
-import { FaderStack } from '../../components/FaderStack/FaderStack.tsx'
+import {
+  Grid,
+  Group,
+  Paper,
+  Stack,
+  rem,
+  Flex,
+  Space,
+  Text,
+} from '@mantine/core'
 import { useFaderMeterContext } from '../../lib/StateProvider.tsx'
-import '../../lib/root100.css'
+import { FaderTrack } from '../../components/FaderTrack/FaderTrack.tsx' // Assuming the context is defined as FaderMeterContext.tsx
 
 export const Route = createLazyFileRoute('/control/mixer')({
   component: Mixer,
@@ -25,43 +33,20 @@ function Mixer() {
   }
 
   return (
-      <>
-        <Grid h={"25%"} align="stretch" styles={{inner: {height: '100%'}}} >
-          <Grid.Col span={6}>
-              <Paper radius={"sm"} h={'100%'} p={"sm"}>
-                HI
-              </Paper>
-          </Grid.Col>
-          <Grid.Col span={6} >
-            <Paper radius={"sm"} h={'100%'} p={"sm"}>
-              <Stack>
-                <Text>hi</Text>
-              </Stack>
-            </Paper>
-          </Grid.Col>
-        </Grid>
-        <Space h={'1%'}/>
-        <Paper h={'74%'} p={"sm"} radius={"sm"}>
-          <Stack
-              align="stretch"
-              justify="flex-end"
-              h={'100%'}
-          >
-            <Group>
-              {faderMeterContext.faders.map((faderValue, index) => (
-                  <FaderStack
-                      key={index}
-                      fader={{
-                        number: index + 1,
-                        value: faderValue,
-                        meter: faderMeterContext.meters[index],
-                      }}
-                      onChange={(newValue: number) => setValue(index + 1, newValue)}
-                  />
-              ))}
-            </Group>
-          </Stack>
-        </Paper>
-      </>
+    <>
+      <Stack align="stretch" justify="flex-end" h={'100%'} gap={0}>
+        {faderMeterContext.faders.map((faderValue, index) => (
+          <FaderTrack
+            key={index}
+            fader={{
+              number: index + 1,
+              value: faderValue,
+              meter: faderMeterContext.meters[index],
+            }}
+            onChange={(newValue: number) => setValue(index + 1, newValue)}
+          />
+        ))}
+      </Stack>
+    </>
   )
 }

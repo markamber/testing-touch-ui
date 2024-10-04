@@ -14,16 +14,16 @@ const brandColor: MantineColorsTuple = [
 ];
 
 const dust: MantineColorsTuple = [
-    "#f0f4fa",
-    "#e0e5ed",
-    "#bcc9dc",
-    "#95abcc",
-    "#7592bf",
-    "#6082b7",
-    "#557ab4",
-    "#46699f",
-    "#3c5d8f",
-    "#2f507f"
+    "#d1dffb",
+    "#395f94",
+    "#395f94",
+    "#335482",
+    "#2c4870",
+    "#253d5e",
+    "#1e314d",
+    "#17263B",
+    "#101b29",
+    "#070C13"
 ];
 
 

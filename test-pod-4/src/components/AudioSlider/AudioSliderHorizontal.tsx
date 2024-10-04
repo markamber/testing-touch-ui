@@ -47,7 +47,7 @@ interface IAudioSliderProps {
 
 export function AudioSliderHorizontal ({ value, onChange }: IAudioSliderProps) {
     // Convert dB to 0-100 value for UI
-    const [sliderValue, setSliderValue] = useState(dBtoValue(value));
+    const [sliderValue, setSliderValue] = useState(dBtoValue(value) / 100);
 
     // Update slider position if the value prop changes
     useEffect(() => {
@@ -57,7 +57,7 @@ export function AudioSliderHorizontal ({ value, onChange }: IAudioSliderProps) {
     const { ref } = useMove(({ x }) => {
         const newValue = x; // Convert y position to value between 0 and 1
         const newDbValue = valueTodB(newValue * 100); // Convert value to dB
-        onChange(newDbValue); // Send dB value to parent
+        onChange(newDbValue); // Send dB value to parent only if it has changed
         setSliderValue(newValue); // Update UI with 0-100 range value
     });
 

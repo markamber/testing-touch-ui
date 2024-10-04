@@ -9,10 +9,11 @@ import {
   Space,
   Text,
 } from '@mantine/core'
+import { FaderStack } from '../../components/FaderStack/FaderStack.tsx'
 import { useFaderMeterContext } from '../../lib/StateProvider.tsx'
-import {FaderTrack} from "../../components/FaderTrack/FaderTrack.tsx"; // Assuming the context is defined as FaderMeterContext.tsx
+import '../../lib/root100.css'
 
-export const Route = createLazyFileRoute('/control/newmixer')({
+export const Route = createLazyFileRoute('/control/oldmixer')({
   component: Mixer,
 })
 
@@ -34,10 +35,26 @@ function Mixer() {
 
   return (
     <>
-
-        <Stack align="stretch" justify="flex-end" h={'100%'} gap={0}>
+      <Grid h={'25%'} align="stretch" styles={{ inner: { height: '100%' } }}>
+        <Grid.Col span={6}>
+          <Paper radius={'sm'} h={'100%'} p={'sm'}>
+            HI
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <Paper radius={'sm'} h={'100%'} p={'sm'}>
+            <Stack>
+              <Text>hi</Text>
+            </Stack>
+          </Paper>
+        </Grid.Col>
+      </Grid>
+      <Space h={'1%'} />
+      <Paper h={'74%'} p={'sm'} radius={'sm'}>
+        <Stack align="stretch" justify="flex-end" h={'100%'}>
+          <Group>
             {faderMeterContext.faders.map((faderValue, index) => (
-              <FaderTrack
+              <FaderStack
                 key={index}
                 fader={{
                   number: index + 1,
@@ -47,8 +64,9 @@ function Mixer() {
                 onChange={(newValue: number) => setValue(index + 1, newValue)}
               />
             ))}
+          </Group>
         </Stack>
-
+      </Paper>
     </>
   )
 }
