@@ -92,11 +92,12 @@ export function AudioSliderHorizontal ({ value, onChange }: IAudioSliderProps) {
                 <div
                     style={{
                         position: 'absolute',
-                        left: `calc(${sliderValue * 100}% - ${rem(8)})`,
-                        top: 0,
-                        width: rem(35),
-                        height: rem(16),
-                        backgroundColor: 'var(--mantine-color-blue-7)',
+                        left: `calc(${sliderValue * 100}% - ${rem(16)})`,
+                        top: -8,
+                        width: rem(32),
+                        height: rem(32),
+                        backgroundColor: 'var(--mantine-color-blue-2)',
+                        borderRadius: rem(16),
                     }}
                     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}

@@ -24,7 +24,7 @@ const getColorForValue = (db: number): string => {
     if (db >= 0) {
         return "red"; // 0 to 10 dB
     } else if (db >= -20) {
-        return "orange"; // -20 to 0 dB
+        return "orange"; // -20 to 0 dB≠
     } else {
         return "green"; // -200 to -20 dB
     }
