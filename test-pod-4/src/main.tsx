@@ -10,6 +10,7 @@ import { FaderMeterProvider } from "./lib/StateProvider.tsx";
 import { routeTree } from './routeTree.gen'
 import {MantineProvider} from "@mantine/core";
 import {theme} from "./theme.ts";
+import {Notifications} from "@mantine/notifications";
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -32,6 +33,7 @@ if (!rootElement.innerHTML) {
         <StrictMode>
             <FaderMeterProvider>
                 <MantineProvider forceColorScheme="dark" theme={theme}>
+                    <Notifications />
                     <RouterProvider router={router} />
                 </MantineProvider>
             </FaderMeterProvider>

@@ -14,10 +14,11 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ControlImport } from './routes/control'
-import { Route as ControlOldmixerImport } from './routes/control/oldmixer'
 import { Route as ControlMixerImport } from './routes/control/mixer'
 import { Route as ControlControlsImport } from './routes/control/controls'
 import { Route as ControlControlsVideoImport } from './routes/control/controls/video'
+import { Route as ControlControlsRoomImport } from './routes/control/controls/room'
+import { Route as ControlControlsCameraImport } from './routes/control/controls/camera'
 import { Route as ControlControlsAudioImport } from './routes/control/controls/audio'
 
 // Create Virtual Routes
@@ -42,11 +43,6 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ControlOldmixerRoute = ControlOldmixerImport.update({
-  path: '/oldmixer',
-  getParentRoute: () => ControlRoute,
-} as any)
-
 const ControlMixerRoute = ControlMixerImport.update({
   path: '/mixer',
   getParentRoute: () => ControlRoute,
@@ -59,6 +55,16 @@ const ControlControlsRoute = ControlControlsImport.update({
 
 const ControlControlsVideoRoute = ControlControlsVideoImport.update({
   path: '/video',
+  getParentRoute: () => ControlControlsRoute,
+} as any)
+
+const ControlControlsRoomRoute = ControlControlsRoomImport.update({
+  path: '/room',
+  getParentRoute: () => ControlControlsRoute,
+} as any)
+
+const ControlControlsCameraRoute = ControlControlsCameraImport.update({
+  path: '/camera',
   getParentRoute: () => ControlControlsRoute,
 } as any)
 
@@ -106,18 +112,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlMixerImport
       parentRoute: typeof ControlImport
     }
-    '/control/oldmixer': {
-      id: '/control/oldmixer'
-      path: '/oldmixer'
-      fullPath: '/control/oldmixer'
-      preLoaderRoute: typeof ControlOldmixerImport
-      parentRoute: typeof ControlImport
-    }
     '/control/controls/audio': {
       id: '/control/controls/audio'
       path: '/audio'
       fullPath: '/control/controls/audio'
       preLoaderRoute: typeof ControlControlsAudioImport
+      parentRoute: typeof ControlControlsImport
+    }
+    '/control/controls/camera': {
+      id: '/control/controls/camera'
+      path: '/camera'
+      fullPath: '/control/controls/camera'
+      preLoaderRoute: typeof ControlControlsCameraImport
+      parentRoute: typeof ControlControlsImport
+    }
+    '/control/controls/room': {
+      id: '/control/controls/room'
+      path: '/room'
+      fullPath: '/control/controls/room'
+      preLoaderRoute: typeof ControlControlsRoomImport
       parentRoute: typeof ControlControlsImport
     }
     '/control/controls/video': {
@@ -134,11 +147,15 @@ declare module '@tanstack/react-router' {
 
 interface ControlControlsRouteChildren {
   ControlControlsAudioRoute: typeof ControlControlsAudioRoute
+  ControlControlsCameraRoute: typeof ControlControlsCameraRoute
+  ControlControlsRoomRoute: typeof ControlControlsRoomRoute
   ControlControlsVideoRoute: typeof ControlControlsVideoRoute
 }
 
 const ControlControlsRouteChildren: ControlControlsRouteChildren = {
   ControlControlsAudioRoute: ControlControlsAudioRoute,
+  ControlControlsCameraRoute: ControlControlsCameraRoute,
+  ControlControlsRoomRoute: ControlControlsRoomRoute,
   ControlControlsVideoRoute: ControlControlsVideoRoute,
 }
 
@@ -149,13 +166,11 @@ const ControlControlsRouteWithChildren = ControlControlsRoute._addFileChildren(
 interface ControlRouteChildren {
   ControlControlsRoute: typeof ControlControlsRouteWithChildren
   ControlMixerRoute: typeof ControlMixerRoute
-  ControlOldmixerRoute: typeof ControlOldmixerRoute
 }
 
 const ControlRouteChildren: ControlRouteChildren = {
   ControlControlsRoute: ControlControlsRouteWithChildren,
   ControlMixerRoute: ControlMixerRoute,
-  ControlOldmixerRoute: ControlOldmixerRoute,
 }
 
 const ControlRouteWithChildren =
@@ -167,8 +182,9 @@ export interface FileRoutesByFullPath {
   '/start': typeof StartLazyRoute
   '/control/controls': typeof ControlControlsRouteWithChildren
   '/control/mixer': typeof ControlMixerRoute
-  '/control/oldmixer': typeof ControlOldmixerRoute
   '/control/controls/audio': typeof ControlControlsAudioRoute
+  '/control/controls/camera': typeof ControlControlsCameraRoute
+  '/control/controls/room': typeof ControlControlsRoomRoute
   '/control/controls/video': typeof ControlControlsVideoRoute
 }
 
@@ -178,8 +194,9 @@ export interface FileRoutesByTo {
   '/start': typeof StartLazyRoute
   '/control/controls': typeof ControlControlsRouteWithChildren
   '/control/mixer': typeof ControlMixerRoute
-  '/control/oldmixer': typeof ControlOldmixerRoute
   '/control/controls/audio': typeof ControlControlsAudioRoute
+  '/control/controls/camera': typeof ControlControlsCameraRoute
+  '/control/controls/room': typeof ControlControlsRoomRoute
   '/control/controls/video': typeof ControlControlsVideoRoute
 }
 
@@ -190,8 +207,9 @@ export interface FileRoutesById {
   '/start': typeof StartLazyRoute
   '/control/controls': typeof ControlControlsRouteWithChildren
   '/control/mixer': typeof ControlMixerRoute
-  '/control/oldmixer': typeof ControlOldmixerRoute
   '/control/controls/audio': typeof ControlControlsAudioRoute
+  '/control/controls/camera': typeof ControlControlsCameraRoute
+  '/control/controls/room': typeof ControlControlsRoomRoute
   '/control/controls/video': typeof ControlControlsVideoRoute
 }
 
@@ -203,8 +221,9 @@ export interface FileRouteTypes {
     | '/start'
     | '/control/controls'
     | '/control/mixer'
-    | '/control/oldmixer'
     | '/control/controls/audio'
+    | '/control/controls/camera'
+    | '/control/controls/room'
     | '/control/controls/video'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -213,8 +232,9 @@ export interface FileRouteTypes {
     | '/start'
     | '/control/controls'
     | '/control/mixer'
-    | '/control/oldmixer'
     | '/control/controls/audio'
+    | '/control/controls/camera'
+    | '/control/controls/room'
     | '/control/controls/video'
   id:
     | '__root__'
@@ -223,8 +243,9 @@ export interface FileRouteTypes {
     | '/start'
     | '/control/controls'
     | '/control/mixer'
-    | '/control/oldmixer'
     | '/control/controls/audio'
+    | '/control/controls/camera'
+    | '/control/controls/room'
     | '/control/controls/video'
   fileRoutesById: FileRoutesById
 }
@@ -265,8 +286,7 @@ export const routeTree = rootRoute
       "filePath": "control.tsx",
       "children": [
         "/control/controls",
-        "/control/mixer",
-        "/control/oldmixer"
+        "/control/mixer"
       ]
     },
     "/start": {
@@ -277,6 +297,8 @@ export const routeTree = rootRoute
       "parent": "/control",
       "children": [
         "/control/controls/audio",
+        "/control/controls/camera",
+        "/control/controls/room",
         "/control/controls/video"
       ]
     },
@@ -284,12 +306,16 @@ export const routeTree = rootRoute
       "filePath": "control/mixer.tsx",
       "parent": "/control"
     },
-    "/control/oldmixer": {
-      "filePath": "control/oldmixer.tsx",
-      "parent": "/control"
-    },
     "/control/controls/audio": {
       "filePath": "control/controls/audio.tsx",
+      "parent": "/control/controls"
+    },
+    "/control/controls/camera": {
+      "filePath": "control/controls/camera.tsx",
+      "parent": "/control/controls"
+    },
+    "/control/controls/room": {
+      "filePath": "control/controls/room.tsx",
       "parent": "/control/controls"
     },
     "/control/controls/video": {

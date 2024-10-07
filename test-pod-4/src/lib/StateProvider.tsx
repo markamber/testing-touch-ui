@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import {notifications} from "@mantine/notifications";
 
 // Define message type constants
 interface MessagePayload {
@@ -13,7 +14,24 @@ interface FaderMeterContextType {
     sendFaderValues: (faders: number[]) => void;
     faders: number[];
     meters: number[];
+    videoIn: VideoIn[];
+    videoOut: VideoOut[];
+    setVideoOutTo: (videoIn: number, videoOut: number) => void;
 }
+
+// Type for video input
+interface VideoIn {
+    number: number;  // Unique identifier for the video input
+    name: string;    // Name or label for the video input
+}
+
+// Type for video output
+interface VideoOut {
+    number: number;  // Unique identifier for the video output
+    name: string;    // Name or label for the video output
+    inNum: number;   // Number of the video input currently assigned to this output
+}
+
 
 // Create a context for faders and meters
 const FaderMeterContext = createContext<FaderMeterContextType | null>(null);
@@ -33,6 +51,73 @@ export const FaderMeterProvider = ({ children }: { children: ReactNode }) => {
     // Local state for faders and meters
     const [faders, setFaders] = useState<number[]>(Array(8).fill(-200));
     const [meters, setMeters] = useState<number[]>(Array(8).fill(-200));
+    const [videoIn] = useState<VideoIn[]>(
+        [
+            {
+                number: 1,
+                name: "Studio SDI"
+            },
+            {
+                number: 2,
+                name: "Booth SDI"
+            },
+            {
+                number: 3,
+                name: "Cam 1"
+            },
+            {
+                number: 4,
+                name: "Cam 2"
+            },
+            {
+                number: 5,
+                name: "Cam 3"
+            },
+            {
+                number: 6,
+                name: "Auto Cam"
+            },
+            {
+                number: 7,
+                name: "Multiview"
+            },
+        ]
+    )
+    const [videoOut, setVideoOut] = useState<VideoOut[]>(
+        [
+            {
+                number: 1,
+                name: "Studio Display",
+                inNum: 1
+            },
+            {
+                number: 2,
+                name: "Booth Display",
+                inNum: 7
+            },
+            {
+                number: 3,
+                name: "Record 1",
+                inNum: 3
+            },
+            {
+                number: 4,
+                name: "Record 2",
+                inNum: 4
+            },
+            {
+                number: 5,
+                name: "Record 3",
+                inNum: 5
+            },
+            {
+                number: 6,
+                name: "Record 4",
+                inNum: 6
+            },
+        ]
+    )
+
 
     // Check if WebSocket connection is open and ready for sending messages
     const canSendMessages: boolean = readyState === ReadyState.OPEN;
@@ -74,9 +159,25 @@ export const FaderMeterProvider = ({ children }: { children: ReactNode }) => {
         [canSendMessages, sM],
     );
 
+    const setVideoOutTo = (videoInNumber: number, videoOutNumber: number) => {
+        setVideoOut((prevVideoOut) =>
+            prevVideoOut.map(out =>
+                out.number === videoOutNumber
+                    ? { ...out, inNum: videoInNumber }  // Update inNum for the matching videoOut
+                    : out  // Return unchanged for others
+            )
+        );
+        notifications.show({
+            title: 'Video Routing Changed',
+            message: `input ${videoInNumber} routed to output ${videoOutNumber}`,
+        })
+
+    };
+
+
     // Render the FaderMeterContext.Provider component and pass the necessary values
     return (
-        <FaderMeterContext.Provider value={{ canSendMessages, sendFaderValues, faders, meters }}>
+        <FaderMeterContext.Provider value={{ canSendMessages, sendFaderValues, faders, meters, videoIn, videoOut, setVideoOutTo }}>
             {children}
         </FaderMeterContext.Provider>
     );
