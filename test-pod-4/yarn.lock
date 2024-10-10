@@ -3080,9 +3080,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@splcode/state-client@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@splcode/state-client@npm:1.0.1"
+"@splcode/state-client@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@splcode/state-client@npm:1.0.3"
   dependencies:
     "@testing-library/jest-dom": "npm:^5.17.0"
     "@testing-library/react": "npm:^13.4.0"
@@ -3099,7 +3099,7 @@ __metadata:
     typescript: "npm:^4.9.5"
     use-debounce: "npm:^10.0.3"
     web-vitals: "npm:^2.1.4"
-  checksum: 10c0/df36ea85c3424076eb387bba66bfb674d156609ed04423521982703388af6dddbd736bd57c2e0aabefb79379fa407040fc7563392fb62283062d84e98b70b105
+  checksum: 10c0/5061d48262a74b382f8e180bab27ec9dc8674ef58be4ca8f3b72e919f797db8cfda4880d92ce88aa1561a199a25ce94b4f7d0bfaf2037f7411f62fa9602f6791
   languageName: node
   linkType: hard
 
@@ -14741,7 +14741,7 @@ __metadata:
     "@mantine/form": "npm:^7.13.2"
     "@mantine/hooks": "npm:7.13.0"
     "@mantine/notifications": "npm:^7.13.2"
-    "@splcode/state-client": "npm:^1.0.1"
+    "@splcode/state-client": "npm:^1.0.3"
     "@tabler/icons-react": "npm:3.17.0"
     "@tanstack/react-query": "npm:^5.59.0"
     "@tanstack/react-query-devtools": "npm:^5.59.0"

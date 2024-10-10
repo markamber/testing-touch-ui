@@ -1,19 +1,8 @@
-import { memo } from "react";
 import {Divider, Flex, Group, Image, Paper, Space, Stack, Switch, Text} from "@mantine/core";
 import { AudioSliderHorizontal } from "../AudioSlider/AudioSliderHorizontal.tsx";
 import myImage from '../../lib/waveform.png';
 import { useConnectedState } from "@splcode/state-client";
-import {BasicAudioMeter} from "../AudioMeter/BasicAudioMeter.tsx";
 import {AudioMeter} from "../AudioMeter/AudioMeter.tsx";
-
-const MemoizedBasicAudioMeter = memo(({ meterValue }: { meterValue: number }) => {
-    return <BasicAudioMeter width={14} height={100} bars={7} soundValue={meterValue} />;
-});
-
-function DynamicMeter(props :{meter: string}) {
-    const [meterValue] = useConnectedState(props.meter); // This will still update frequently
-    return <BasicAudioMeter width={14} height={100} bars={7} soundValue={meterValue} />
-}
 
 function DynamicFader(props :{fader: string}) {
     const [fdr, _, setFader] = useConnectedState(props.fader);
@@ -29,10 +18,7 @@ interface IFaderStackProps {
     meter: string;
 }
 
-export const FaderTrack = ({ number, fader, meter }: IFaderStackProps) => {
-
-
-
+export const FaderTrack = ({ fader, meter }: IFaderStackProps) => {
 
     return (
         <Paper withBorder>
