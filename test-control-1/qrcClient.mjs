@@ -1,8 +1,8 @@
-const QrcClient = require('qsys-qrc-client').default;
-const commands = require('qsys-qrc-client').commands;
-const EventEmitter = require('events');
+import QrcClient, {commands} from "qsys-qrc-client";
 
-const client = new QrcClient();
+import EventEmitter from "events";
+
+const client = new QrcClient.default();
 client.connect({
     port: 1710,
     host: '192.168.20.173',
@@ -59,7 +59,4 @@ const setFaderValue = async (faderNum, value) => {
 // Initialize the setupMeters function
 setupMeters();
 
-module.exports = {
-    qrcEvents, // Emit events when meters update
-    setFaderValue, // Set slider values for volume control
-};
+export {qrcEvents, setFaderValue}

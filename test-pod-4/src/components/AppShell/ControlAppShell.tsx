@@ -1,6 +1,6 @@
 import {ActionIcon, AppShell, Burger, Center, Grid, Group, Divider, Paper, rem, Tabs, Space} from '@mantine/core';
 import classes from './ControlAppShell.module.css';
-import {Outlet, useNavigate, useParams} from "@tanstack/react-router";
+import {Outlet, useNavigate} from "@tanstack/react-router";
 import './ControlAppShell.css'
 import {
   IconAdjustmentsFilled,
@@ -67,18 +67,18 @@ export function ControlAppShell() {
                   <Grid>
                     <Grid.Col span={12}  h={40} style={{ borderBottom: 1, borderColor: 'white'}} >
                       <Center h={34}>
-                        HI
+                        Session Name
                       </Center>
                       <Divider />
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Center >
-                        HI
+                        00:00
                       </Center>
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Center>
-                        HI
+                        Part 1
                       </Center>
                     </Grid.Col>
                   </Grid>

@@ -8,4 +8,4 @@ const updateMeters = (meters) => {
     state.audioMeters = meters;
 };
 
-module.exports = { state, updateMeters };
+export { state, updateMeters };

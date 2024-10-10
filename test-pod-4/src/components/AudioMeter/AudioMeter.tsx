@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import "./AudioMeter.module.css";
+import {useConnectedState} from "@splcode/state-client";
 
 const dBtoValue = (db: number): number => {
     let mm: number;
@@ -31,7 +32,7 @@ const getColorForValue = (db: number): string => {
 };
 
 interface MeterProps {
-    soundValue: number; // Value in dB
+    meter: string; // Value in dB
     bars?: number; // Number of bars (optional, defaults to a reasonable value)
     width?: number; // Width of each bar (optional)
     height?: number; // Height of the meter (optional)
@@ -39,7 +40,7 @@ interface MeterProps {
 }
 
 export const AudioMeter = ({
-                               soundValue,
+                               meter,
                                bars = 30, // default number of bars
                                width = 10, // default width of bars
                                height = 100, // default height of the meter
@@ -47,6 +48,7 @@ export const AudioMeter = ({
                            }: MeterProps) => {
     const refs = useRef<(HTMLDivElement | null)[]>([]);
     const volumeRefs = useRef(new Array(bars).fill(0));
+    const [soundValue] = useConnectedState(meter); // This will still update frequently
 
     // Memoize the elements to avoid recreating them on every render
     const elements = useMemo(() => {

@@ -2,7 +2,8 @@
   "name": "test-control-1",
   "version": "1.0.0",
   "description": "control aspects of room",
-  "main": "index.js",
+  "main": "index.mjs",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
@@ -10,10 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@br8kppooint/visca": "^0.0.28",
+    "@companion-module/base": "~1.11.0",
+    "@splcode/state-server": "1.0.3",
+    "axios": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "qsys-qrc-client": "^0.1.1",
+    "visca-over-ip": "^1.0.16",
     "ws": "^8.18.0",
     "zen-observable": "^0.10.0"
+  },
+  "devDependencies": {
+    "@companion-module/tools": "^2.1.0"
   }
 }

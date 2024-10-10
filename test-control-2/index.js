@@ -97,7 +97,7 @@ wss.on("connection", (ws) => {
 });
 
 // Start broadcasting meter values every 30 milliseconds
-setInterval(broadcastMeters, 30);
+setInterval(broadcastMeters, 1000);
 
 // Start the server and listen on a specific port
 const port = process.env.PORT || 3001;

@@ -1,107 +1,39 @@
 import {
-    Affix,
-    Box, Button,
     Card,
-    Divider, Drawer,
-    Flex,
+    Drawer,
     Grid,
-    Group,
-    Paper,
-    rem,
     SimpleGrid,
-    Text,
-    UnstyledButton
 } from '@mantine/core';
-import {DndContext, DragEndEvent, DragOverlay, useDraggable, useDroppable} from '@dnd-kit/core';
-import { CSS } from "@dnd-kit/utilities";
-import cx from "clsx";
 import classes from './PickNDrag.module.css';
+import { useState } from "react";
+import { DndContext, DragEndEvent, DragOverlay } from '@dnd-kit/core';
 import { useFaderMeterContext } from "../../lib/StateProvider";
-import {useState} from "react";
-import {useDisclosure} from "@mantine/hooks";
-
-interface DroppableProps {
-    id: string | number;
-    itemName: string;
-    inNum: number;
-}
-
-interface DraggableProps {
-    id: string | number;
-    itemName: string;
-}
-
-
-interface TileProps {
-    id: string | number;
-    itemName: string;
-    withBorder?: boolean;
-    inNum?: number
-}
-
-function DragTile({ itemName, withBorder, inNum }: TileProps) {
-
-    const style = {
-        border: withBorder ? `${rem(1)} solid var(--mantine-color-white)` : ''
-    };
-
-    return (
-        <UnstyledButton
-            className={classes.item}
-            style={style}
-        >
-            <Text className={classes.symbol}>C</Text>
-            <Text size="xs" mt={7}>
-                {itemName}
-            </Text>
-
-            <Divider c='white' />
-            <Text c="dimmed" size="sm">
-                {inNum && inNum}
-            </Text>
-        </UnstyledButton>
-    )
-}
-
-function Droppable({ id, itemName, inNum }: DroppableProps) {
-    const { isOver, setNodeRef } = useDroppable({
-        id,
-    });
-
-    return (
-        <div ref={setNodeRef}>
-            <DragTile id={id} itemName={itemName} withBorder={isOver} inNum={inNum} />
-        </div>
-
-    );
-}
-
-
-
-function Draggable({ id, itemName }: DraggableProps) {
-    const {  attributes, listeners, setNodeRef } = useDraggable({
-        id,
-    });
-
-    return (
-        <div
-            ref={setNodeRef}
-            {...attributes}
-            {...listeners}
-        >
-            <DragTile id={id} itemName={itemName}/>
-        </div>
-    );
-}
+import { useDisclosure } from "@mantine/hooks";
+import { Draggable } from "./Draggable.tsx";
+import { DragTile } from "./DragTile.tsx";
+import { Droppable } from "./Droppable.tsx";
 
 export function PickNDrag() {
+
     const faderMeterContext = useFaderMeterContext();
 
     const [activeId, setActiveId] = useState(null);
 
     const [opened, { open, close }] = useDisclosure(false);
 
-    function handleDragStart(event) {
+    const [inOutOpen, setInOutOpen] = useState({inOut: '', num: 0})
+
+    function openDrawer(inOut: 'input' | 'output' | 'closed', num: number) {
+        setInOutOpen({inOut: inOut, num: num})
+        open()
+    }
+
+    function closeDrawer(){
+        setInOutOpen({inOut: 'closed', num: 0})
+        close()
+    }
+
+    function handleDragStart(event: any) {
         setActiveId(event.active.id);
     }
 
@@ -150,23 +82,20 @@ export function PickNDrag() {
                                         itemName={ou.name}
                                         inNum={ou.inNum}
                                         key={ou.number}
+                                        isInOut={(inOutOpen.inOut === 'output' && inOutOpen.num === ou.number)}
+                                        onClick={() => openDrawer('output', ou.number as number)}
                                     />
                                 ))}
                             </SimpleGrid>
                         </Card>
                     </Grid.Col>
-                    <Grid.Col span={{ base: 12, xs: 12 }}>
-                        <Card>
-                            yoyoyo
-                        </Card>
-                    </Grid.Col>
+
                 </Grid>
             </DndContext>
-            <Drawer opened={opened} onClose={close} title="Authentication" position="bottom">
-                {/* Drawer content */}
+            <Drawer opened={opened} onClose={closeDrawer} title="Video Output Settings" position="bottom">
+                {JSON.stringify(inOutOpen)}
             </Drawer>
 
-            <Button onClick={open}>Open Drawer</Button>
         </div>
     );
 }

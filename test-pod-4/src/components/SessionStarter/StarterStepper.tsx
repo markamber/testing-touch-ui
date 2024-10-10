@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, Code } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Code } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {Link} from "@tanstack/react-router";
 

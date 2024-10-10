@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     IconArrowDown,
     IconArrowDownLeft,
@@ -10,105 +9,64 @@ import {
     IconArrowUpRight,
     IconCircle,
 } from '@tabler/icons-react';
-import { FloatingIndicator, UnstyledButton } from '@mantine/core';
-import classes from './Demo.module.css';
+import {Box, rem } from '@mantine/core';
+import classes from './PtzWidget.module.css';
+import {useMove} from "@mantine/hooks";
 
-function PtzArrow() {
-    const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-    const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-    const [active, setActive] = useState('center');
+export function PtzArrow(props: {value: { x: number, y: number }, setValue:(coord: { x: number, y: number }) => void}) {
 
-    const setControlRef = (name: string) => (node: HTMLButtonElement) => {
-        controlsRefs[name] = node;
-        setControlsRefs(controlsRefs);
-    };
+    const { ref, active } = useMove(props.setValue, {onScrubEnd: setCenter});
+
+    function setCenter() {
+        props.setValue({x: 0.5, y: 0.5})
+    }
 
     return (
-        <div className={classes.root} dir="ltr" ref={setRootRef}>
-            <FloatingIndicator
-                target={controlsRefs[active]}
-                parent={rootRef}
-                className={classes.indicator}
-            />
-
+        <div className={classes.root} dir="ltr" ref={ref}>
             <div className={classes.controlsGroup}>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('up-left')}
-                    ref={setControlRef('up-left')}
-                    mod={{ active: active === 'up-left' }}
-                >
+                <Box className={classes.control}>
                     <IconArrowUpLeft size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('up')}
-                    ref={setControlRef('up')}
-                    mod={{ active: active === 'up' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconArrowUp size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('up-right')}
-                    ref={setControlRef('up-right')}
-                    mod={{ active: active === 'up-right' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconArrowUpRight size={26} stroke={1.5} />
-                </UnstyledButton>
+                </Box>
             </div>
             <div className={classes.controlsGroup}>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('left')}
-                    ref={setControlRef('left')}
-                    mod={{ active: active === 'left' }}
-                >
+                <Box className={classes.control}>
                     <IconArrowLeft size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('center')}
-                    ref={setControlRef('center')}
-                    mod={{ active: active === 'center' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconCircle size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('right')}
-                    ref={setControlRef('right')}
-                    mod={{ active: active === 'right' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconArrowRight size={26} stroke={1.5} />
-                </UnstyledButton>
+                </Box>
             </div>
             <div className={classes.controlsGroup}>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('down-left')}
-                    ref={setControlRef('down-left')}
-                    mod={{ active: active === 'down-left' }}
-                >
+                <Box className={classes.control}>
                     <IconArrowDownLeft size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('down')}
-                    ref={setControlRef('down')}
-                    mod={{ active: active === 'down' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconArrowDown size={26} stroke={1.5} />
-                </UnstyledButton>
-                <UnstyledButton
-                    className={classes.control}
-                    onClick={() => setActive('down-right')}
-                    ref={setControlRef('down-right')}
-                    mod={{ active: active === 'down-right' }}
-                >
+                </Box>
+                <Box className={classes.control}>
                     <IconArrowDownRight size={26} stroke={1.5} />
-                </UnstyledButton>
+                </Box>
             </div>
+            <Box
+                className={classes.control}
+                style={{
+                    position: 'absolute',
+                    left: `calc(${props.value.x * 100}% - ${rem(8)})`,
+                    top: `calc(${props.value.y * 100}% - ${rem(8)})`,
+                    width: rem(16),
+                    height: rem(16),
+                    backgroundColor: active ? 'var(--mantine-color-teal-7)' : 'var(--mantine-color-blue-7)',
+                }}
+            />
         </div>
     );
 }
